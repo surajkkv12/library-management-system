@@ -35,7 +35,7 @@ git clone https://github.com/surajkkv12/library-management-system.git
 3. Configure database in application.properties:
 spring.datasource.url=jdbc:mysql://localhost:3306/library_db
 spring.datasource.username=root
-spring.datasource.password=YOUR_PASSWORD
+spring.datasource.password=Your_Password
 
 4. Run the project:
 Right click → Run as Spring Boot App
@@ -57,7 +57,7 @@ POST /borrow?userId=1&bookId=1&days=5
 # Testing
 
 APIs tested using Postman  
-Status: Working ✅
+Status: Working 
 
 ---
 
