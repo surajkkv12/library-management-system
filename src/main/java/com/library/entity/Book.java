@@ -12,7 +12,7 @@ public class Book {
     private String name;
     private String author;
     private String category;
-    private String status; // available / taken
+    private String status;
     private Long takenByUserId;
 
     public Long getId() { return id; }

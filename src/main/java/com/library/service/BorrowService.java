@@ -2,11 +2,11 @@ package com.library.service;
 
 import com.library.entity.*;
 import com.library.repository.*;
+import com.library.dto.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class BorrowService {
@@ -20,21 +20,21 @@ public class BorrowService {
     @Autowired
     private UserRepository userRepository;
 
-    public String borrowBook(Long userId, Long bookId, int days) {
+    public ApiResponse borrowBook(Long userId, Long bookId, int days) {
 
         User user = userRepository.findById(userId).orElse(null);
         Book book = bookRepository.findById(bookId).orElse(null);
 
         if (user == null || book == null) {
-            return "User or Book not found";
+            return new ApiResponse("User or Book not found", false);
         }
 
         if (user.getMembershipMonths() <= 0) {
-            return "Membership expired";
+            return new ApiResponse("Membership expired", false);
         }
 
-        if (!book.getStatus().equals("available")) {
-            return "Book not available";
+        if (!"available".equals(book.getStatus())) {
+            return new ApiResponse("Book not available", false);
         }
 
         book.setStatus("taken");
@@ -49,24 +49,6 @@ public class BorrowService {
 
         borrowRepository.save(borrow);
 
-        return "Book borrowed successfully";
-    }
-
-    public String returnBook(Long bookId) {
-
-        Book book = bookRepository.findById(bookId).orElse(null);
-
-        if (book == null) return "Book not found";
-
-        book.setStatus("available");
-        book.setTakenByUserId(null);
-
-        bookRepository.save(book);
-
-        return "Book returned";
-    }
-
-    public List<Borrow> getUserHistory(Long userId) {
-        return borrowRepository.findByUserId(userId);
+        return new ApiResponse("Book borrowed successfully", true);
     }
 }
