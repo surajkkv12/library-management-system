@@ -1,18 +1,18 @@
 package com.library.service;
 
-import com.library.entity.*;
-import com.library.repository.*;
-import com.library.dto.ApiResponse;
+import com.library.entity.Book;
+import com.library.entity.Borrow;
+import com.library.entity.User;
+import com.library.repository.BookRepository;
+import com.library.repository.BorrowRepository;
+import com.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class BorrowService {
-
-    @Autowired
-    private BorrowRepository borrowRepository;
 
     @Autowired
     private BookRepository bookRepository;
@@ -20,21 +20,24 @@ public class BorrowService {
     @Autowired
     private UserRepository userRepository;
 
-    public ApiResponse borrowBook(Long userId, Long bookId, int days) {
+    @Autowired
+    private BorrowRepository borrowRepository;
+
+    public String borrowBook(Long userId, Long bookId, int days) {
 
         User user = userRepository.findById(userId).orElse(null);
         Book book = bookRepository.findById(bookId).orElse(null);
 
         if (user == null || book == null) {
-            return new ApiResponse("User or Book not found", false);
+            return "User or Book not found";
         }
 
         if (user.getMembershipMonths() <= 0) {
-            return new ApiResponse("Membership expired", false);
+            return "Membership expired";
         }
 
         if (!"available".equals(book.getStatus())) {
-            return new ApiResponse("Book not available", false);
+            return "Book not available";
         }
 
         book.setStatus("taken");
@@ -44,11 +47,28 @@ public class BorrowService {
         Borrow borrow = new Borrow();
         borrow.setUserId(userId);
         borrow.setBookId(bookId);
-        borrow.setIssueDate(LocalDate.now());
-        borrow.setReturnDate(LocalDate.now().plusDays(days));
+        borrow.setDays(days);
 
         borrowRepository.save(borrow);
 
-        return new ApiResponse("Book borrowed successfully", true);
+        return "Book borrowed successfully";
+    }
+
+    public String returnBook(Long bookId) {
+
+        Book book = bookRepository.findById(bookId).orElse(null);
+
+        if (book == null) return "Book not found";
+
+        book.setStatus("available");
+        book.setTakenByUserId(null);
+
+        bookRepository.save(book);
+
+        return "Book returned successfully";
+    }
+
+    public List<Borrow> getUserHistory(Long userId) {
+        return borrowRepository.findByUserId(userId);
     }
 }

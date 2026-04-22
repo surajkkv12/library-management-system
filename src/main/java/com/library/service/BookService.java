@@ -27,13 +27,19 @@ public class BookService {
         return bookRepository.findByCategory(category);
     }
 
-    public Book getById(Long id) {
-        return bookRepository.findById(id).orElse(null);
+    public List<Book> getByAuthor(String author) {
+        return bookRepository.findByAuthor(author);
     }
 
-    public Book save(Book book) {
-        return bookRepository.save(book);
+    public List<Book> getByStatus(String status) {
+        return bookRepository.findByStatus(status);
     }
+
+    public List<Book> getByName(String name) {
+        return bookRepository.findByName(name);
+    }
+
+    // REPORT API
     public List<String> getCategoryReport() {
 
         List<Object[]> data = bookRepository.countBooksByCategory();
@@ -49,7 +55,7 @@ public class BookService {
             String category = (String) row[0];
             long count = (long) row[1];
 
-            double percent = (count * 100.0) / total;
+            double percent = total == 0 ? 0 : (count * 100.0) / total;
             result.add(category + " : " + percent + "%");
         }
 

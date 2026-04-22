@@ -28,4 +28,9 @@ public class Borrow {
 
     public LocalDate getReturnDate() { return returnDate; }
     public void setReturnDate(LocalDate returnDate) { this.returnDate = returnDate; }
+
+	public void setDays(int days) {
+		// TODO Auto-generated method stub
+		
+	}
 }
