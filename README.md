@@ -1,66 +1,114 @@
-# Library Management System
+# Library Management System (Spring Boot)
 
 A RESTful Library Management System built using Spring Boot and MySQL.
+This project provides APIs for managing users, books, borrowing/returning functionality, and membership validation.
 
 ---
 
 # Features
 
-- User Registration & Login
-- Membership Management
-- Add / View Books
-- Borrow Book with validation
-- REST APIs tested using Postman
+# Basic APIs
+
+* Get list of all users with details
+* Get list of books with filters (category, status, name, author)
+* User login
+* Add book to library
+* Update book status (available / taken)
+* Check and update user membership
+
+# Advanced APIs
+
+* Borrow book with membership validation
+* Return book functionality
+* Track user book history (current + past books)
+* Get most popular book categories (percentage-based reporting)
 
 ---
 
 # Tech Stack
 
-- Java
-- Spring Boot
-- Spring Data JPA
-- MySQL
-- Maven
-- Postman
+* Java
+* Spring Boot
+* Spring Data JPA
+* MySQL
+* Maven
 
 ---
 
-# Setup Instructions
+# How to Run the Project
 
-1. Clone the repository:
+# Clone Repository
+
+```
 git clone https://github.com/surajkkv12/library-management-system.git
+```
 
-2. Open in Eclipse / Spring Tool Suite
+# Configure Database
 
-3. Configure database in application.properties:
+Open `src/main/resources/application.properties` and update:
+
+```
 spring.datasource.url=jdbc:mysql://localhost:3306/library_db
-spring.datasource.username=root
-spring.datasource.password=Your_Password
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+```
 
-4. Run the project:
-Right click → Run as Spring Boot App
+# Run Application
+
+```
+mvn spring-boot:run
+```
+
+# Test APIs
+
+Use Postman to test APIs on:
+
+```
+http://localhost:8080
+```
 
 ---
 
 # API Endpoints
 
-POST /users → Create user  
-GET /users → Get all users  
+# User APIs
 
-POST /books → Add book  
-GET /books → Get all books  
+* POST `/users` → Create user
+* GET `/users` → Get all users
+* GET `/users/{id}` → Get user details
 
-POST /borrow?userId=1&bookId=1&days=5  
+# Book APIs
+
+* POST `/books` → Add book
+* GET `/books` → Get all books
+* GET `/books/search` → Filter books
+
+# Borrow APIs
+
+* POST `/borrow?userId=1&bookId=1&days=5` → Borrow book
+* POST `/return?userId=1&bookId=1` → Return book
 
 ---
 
-# Testing
+# Business Logic Covered
 
-APIs tested using Postman  
-Status: Working 
+* Membership validation before borrowing
+* Book availability check
+* Auto status update (available / taken)
+* User borrowing tracking
+* Category-based reporting
+
+---
+
+# Project Status
+
+✔ Fully functional
+✔ Database integrated
+✔ APIs tested using Postman
+✔ GitHub ready
 
 ---
 
 # Author
 
-Sachin Vishwakarma
+**Suraj Vishwakarma**
